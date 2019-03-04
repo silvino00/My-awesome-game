@@ -22,22 +22,37 @@ int main(int argc, char *argv[]) {
 
 	//Comprobamos si la venta ha sido creada con exito
 	if (window == NULL) {
-		cout << "Could not creat window" << SDL_GetError() << endl;
+		cout << "Could not create window" << SDL_GetError() << endl;
 		return 1;
 	}
 
 	//coordenadas inicializadas para hacer el movimiento aleatorio
 	int x = 0;
 	int y = 0;
+	int moverx = 1;
+	int movery = 1;
 
 	//añadimos un loop infinito
-	while (1) {
+	while (true==1) {
 		SDL_Event event;
 		while (SDL_PollEvent(&event)) {
 			//aqui colocamos nuestro evento
-			x = (rand() % 640);
-			y = (rand() % 480);
-		}
+			x = x + moverx;
+			y = y + movery;
+			if (x >= 490) {
+				moverx = -1;
+			}
+			else if (y >= 330) {
+				movery = -1;
+			}
+			else if (x <= 0) {
+				moverx = 1;
+			}
+			else if (y <= 0) {
+				movery = 1;
+			}
+			
+				}
 		//dibujamos nuestra app
 		render = SDL_CreateRenderer(window, -1, 0);
 
@@ -56,8 +71,8 @@ int main(int argc, char *argv[]) {
 		rectangle.x = x;
 		rectangle.y = y;
 		//asignamos alto y ancho en px
-		rectangle.w = 100;
-		rectangle.h = 50;
+		rectangle.w = 150;
+		rectangle.h = 150;
 
 		//rellenamos el rectangulo del color que hemos escogido
 		SDL_RenderFillRect(render, &rectangle);
@@ -66,7 +81,7 @@ int main(int argc, char *argv[]) {
 		SDL_RenderPresent(render);
 
 		//añadimos un delay para poder ver cada movimiento del cuadrado en cada iteración del bucle
-		SDL_Delay(500);
+		SDL_Delay(1);
 
 		//destruimos el render para poder comenzar de nuevo otra posicion aleatoria
 		SDL_DestroyRenderer(render);
