@@ -9,9 +9,7 @@
 using namespace std;
 
 int main(int argc, char *argv[]) {
-	//Declara la semilla para usarla en la posicion del cuadrado
-	srand(time(NULL));
-
+	
 	SDL_Window *window;
 	SDL_Renderer *render;
 
@@ -20,39 +18,58 @@ int main(int argc, char *argv[]) {
 
 	window = SDL_CreateWindow("Nave", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_RESIZABLE);
 
-	//Comprobamos si la venta ha sido creada con exito
-	if (window == NULL) {
-		cout << "Could not create window" << SDL_GetError() << endl;
-		return 1;
-	}
-
-	//coordenadas inicializadas para hacer el movimiento aleatorio
+	//coordenadas inicializadas para que el quadrado despues se mueva
 	int x = 0;
 	int y = 0;
-	int moverx = 1;
-	int movery = 1;
+	int moverx = 3;
+	int movery = 3;
 
 	//añadimos un loop infinito
 	while (true==1) {
 		SDL_Event event;
 		while (SDL_PollEvent(&event)) {
+			switch (event.type) {
+			case SDL_KEYDOWN:
+				switch (event.key.keysym.sym) {
+				case SDLK_LEFT:
+					x -= 1;
+					break;
+				case SDLK_RIGHT:
+					x += 1;
+					break;
+				case SDLK_UP:
+					y -= 1;
+					break;
+				case SDLK_DOWN:
+					y += 1;
+					break;
+				default:
+					break;
+				}
+							
+			}
+		}
+		/*
+		while (SDL_PollEvent(&event)) {
 			//aqui colocamos nuestro evento
 			x = x + moverx;
 			y = y + movery;
 			if (x >= 490) {
-				moverx = -1;
+				moverx = -3;
 			}
 			else if (y >= 330) {
-				movery = -1;
+				movery = -3;
 			}
 			else if (x <= 0) {
-				moverx = 1;
+				moverx = 3;
 			}
 			else if (y <= 0) {
-				movery = 1;
+				movery = 3;
 			}
 			
-				}
+		}
+		*/
+
 		//dibujamos nuestra app
 		render = SDL_CreateRenderer(window, -1, 0);
 
