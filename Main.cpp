@@ -1,25 +1,33 @@
-#include"SDL/include/SDL.h"
+#include "SDL/include/SDL.h"
 #include <iostream>
 #include <time.h>
+#include "SDL_Image/include/SDL_image.h"
 
 #pragma comment(lib, "SDL/libx86/SDL2.lib")
 #pragma comment(lib, "SDL/libx86/SDL2main.lib")
+#pragma comment(lib, "SDL_Image/libx86/SDL2_image.lib")
 
-//Namespacce para la liberería iostream(std::)
 using namespace std;
 
 int main(int argc, char *argv[]) {
 	
-	SDL_Window *window;
-	SDL_Renderer *render;
+	SDL_Window* window;
+	SDL_Renderer* render;
+	SDL_Surface* surf;
+	SDL_Texture* background;
+	SDL_Texture* blueshapes;
+
 	int num = 1;
 	int spacekey = 0;
 
+	int flags = IMG_INIT_JPG | IMG_INIT_PNG;
+	int initted = IMG_Init(flags);
 
 	//Iniciamos SDL en modo video
 	int SDL_init(SDL_INIT_VIDEO);
 
 	window = SDL_CreateWindow("Box", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_RESIZABLE);
+	render = SDL_CreateRenderer(window, -1, 0);
 
 	//coordenadas inicializadas para que el quadrado despues se mueva
 	int x = 320;
