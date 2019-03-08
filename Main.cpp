@@ -12,64 +12,63 @@ int main(int argc, char *argv[]) {
 	
 	SDL_Window *window;
 	SDL_Renderer *render;
+	int num = 1;
+	int spacekey = 0;
+
 
 	//Iniciamos SDL en modo video
 	int SDL_init(SDL_INIT_VIDEO);
 
-	window = SDL_CreateWindow("Nave", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_RESIZABLE);
+	window = SDL_CreateWindow("Box", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_RESIZABLE);
 
 	//coordenadas inicializadas para que el quadrado despues se mueva
-	int x = 0;
-	int y = 0;
-	int moverx = 3;
-	int movery = 3;
+	int x = 320;
+	int y = 240;
+	
+	int z = x + 25;
+	int w = y + 25;
 
 	//añadimos un loop infinito
-	while (true==1) {
+	while (num==1) {
 		SDL_Event event;
 		while (SDL_PollEvent(&event)) {
 			switch (event.type) {
 			case SDL_KEYDOWN:
 				switch (event.key.keysym.sym) {
+				case SDLK_ESCAPE:
+					num = 0;
+					break;
 				case SDLK_LEFT:
-					x -= 1;
+					x -= 20;
 					break;
 				case SDLK_RIGHT:
-					x += 1;
+					x += 20;
 					break;
 				case SDLK_UP:
-					y -= 1;
+					y -= 20;
 					break;
 				case SDLK_DOWN:
-					y += 1;
+					y += 20;
+					break;
+				case SDLK_SPACE:
+					z = x;
+					w = y + 25;
 					break;
 				default:
 					break;
 				}
-							
+				break;
+			
+			case SDL_QUIT:
+				num = 0;
+				break;
 			}
-		}
-		/*
-		while (SDL_PollEvent(&event)) {
-			//aqui colocamos nuestro evento
-			x = x + moverx;
-			y = y + movery;
-			if (x >= 490) {
-				moverx = -3;
-			}
-			else if (y >= 330) {
-				movery = -3;
-			}
-			else if (x <= 0) {
-				moverx = 3;
-			}
-			else if (y <= 0) {
-				movery = 3;
-			}
+
 			
 		}
-		*/
-
+			
+		z = z + 20;
+	
 		//dibujamos nuestra app
 		render = SDL_CreateRenderer(window, -1, 0);
 
@@ -79,17 +78,12 @@ int main(int argc, char *argv[]) {
 		//llenamos la pantalla del color seleccionado anteriormente
 		SDL_RenderClear(render);
 
-		//colocamos el cuadrado rojo
-		SDL_SetRenderDrawColor(render, 255, 0, 0, 255);
+
 		//utilizamos la funcion para definir un rectangulo
 		SDL_Rect rectangle;
 
-		//asignamos posicion x e y con semilla aleatoria
-		rectangle.x = x;
-		rectangle.y = y;
-		//asignamos alto y ancho en px
-		rectangle.w = 150;
-		rectangle.h = 150;
+		//colocamos el cuadrado rojo
+		SDL_SetRenderDrawColor(render, 255, 0, 0, 255);
 
 		//rellenamos el rectangulo del color que hemos escogido
 		SDL_RenderFillRect(render, &rectangle);
@@ -97,8 +91,31 @@ int main(int argc, char *argv[]) {
 		//actualizamos y mostramos lo que hay en pantalla tras renderizar capa a capa
 		SDL_RenderPresent(render);
 
-		//añadimos un delay para poder ver cada movimiento del cuadrado en cada iteración del bucle
-		SDL_Delay(1);
+		//utilizamos la funcion para definir un rectangulo
+		SDL_Rect rectangle2;
+
+		//colocamos la bala de la nave de color verde
+		SDL_SetRenderDrawColor(render, 0, 255, 0, 0);
+
+		//rellenamos el rectangulo del color que hemos escogido
+		SDL_RenderFillRect(render, &rectangle2);
+
+		//actualizamos y mostramos lo que hay en pantalla tras renderizar capa a capa
+		SDL_RenderPresent(render);
+
+		//asignamos posicion x e y con semilla aleatoria
+		rectangle.x = x;
+		rectangle.y = y;
+		//asignamos alto y ancho en px
+		rectangle.w = 50;
+		rectangle.h = 50;
+
+		//asignamos posicion x e y con semilla aleatoria
+		rectangle2.x = z;
+		rectangle2.y = w;
+		//asignamos alto y ancho en px
+		rectangle2.w = 10;
+		rectangle2.h = 5;
 
 		//destruimos el render para poder comenzar de nuevo otra posicion aleatoria
 		SDL_DestroyRenderer(render);
