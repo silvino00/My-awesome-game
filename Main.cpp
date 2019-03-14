@@ -19,18 +19,19 @@ int main(int argc, char *argv[]) {
 	SDL_Surface *background;
 	SDL_Surface *spaceship;
 	SDL_Surface *laser;
+	Mix_Chunk *player_laser;
 	//utilizamos la funcion para definir un rectangulo
 	SDL_Rect rectangle;
 	//utilizamos la funcion para definir un rectangulo
 	SDL_Rect rectangle2;
 	
-	background = IMG_Load("Assets/background.png");
-	spaceship = IMG_Load("Assets/descarga.png");
-	laser = IMG_Load("Assets/laser.png");
+	background = IMG_Load("Assets/moes.png");
+	spaceship = IMG_Load("Assets/hommer.png");
+	laser = IMG_Load("Assets/donuts.png");
 	//SDL_Surface* surf;
 	//SDL_Texture* background;
 	//SDL_Texture* blueshapes;
-
+	    
 	int num = 1;
 	int spacekey = 0;
 	int up = 0, left = 0, right = 0, down = 0;
@@ -49,8 +50,8 @@ int main(int argc, char *argv[]) {
 	rectangle.x = x;
 	rectangle.y = y;
 	//asignamos alto y ancho en px
-	rectangle.w = 50;
-	rectangle.h = 50;
+	rectangle.w = 100;
+	rectangle.h = 200;
 
 	//asignamos posicion x e y con semilla aleatoria
 	rectangle2.x = z;
@@ -65,6 +66,9 @@ int main(int argc, char *argv[]) {
 
 	//Iniciamos SDL en modo video
 	int SDL_init(SDL_INIT_VIDEO);
+	int Mix_Init(SDL_INIT_AUDIO);
+	Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 1000);
+	player_laser = Mix_LoadWAV("Assets/player_laser.wav");
 
 	window = SDL_CreateWindow("Box", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_RESIZABLE);
 	
@@ -102,8 +106,9 @@ int main(int argc, char *argv[]) {
 					break;
 				case SDLK_SPACE:
 					spacekey = 1;
-					rectangle2.x= rectangle.x;
-					rectangle2.y = rectangle.y + 25;
+					rectangle2.x = rectangle.x + 25;
+					rectangle2.y = rectangle.y + 10;
+					Mix_PlayChannel(-1, player_laser, 0);
 					break;
 				default:
 					break;
@@ -175,7 +180,7 @@ int main(int argc, char *argv[]) {
 		SDL_RenderCopy(render, laser_text, NULL, &rectangle2);
 		//actualizamos y mostramos lo que hay en pantalla tras renderizar capa a capa
 		SDL_RenderPresent(render);
-
+		SDL_Delay(1);
 		
 	}
 	//destruimos la ventana creada anteriormente
@@ -192,7 +197,3 @@ int main(int argc, char *argv[]) {
 	return 0;
 	
 }
-
-
-
-
